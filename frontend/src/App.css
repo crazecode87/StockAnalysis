@@ -1,0 +1,10 @@
+.app { padding: 20px; font-family: Arial, sans-serif; }
+.toolbar { margin-bottom: 20px; }
+.toolbar input  { margin-right: 10px; padding: 5px; }
+.toolbar button { margin-right: 5px; padding: 5px 10px; }
+.chart-container img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ccc;
+}
+.error { color: red; margin-top: 10px; }
