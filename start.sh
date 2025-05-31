@@ -10,5 +10,5 @@ echo "Starting UI..."
 cd frontend
 npm run dev
 
-# Kill Python when React stops
+# close the data retrieval process when React stops
 trap "kill 0" EXIT
