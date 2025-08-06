@@ -7,13 +7,15 @@ export default function StockChart({ ticker, start, end, interval }) {
   useEffect(() => {
     if (!ticker || !start || !end) return
 
-    const url = 
-      `http://localhost:8000/api/chart` +
-      `?ticker=${ticker}` +
-      `&start=${start}` +
-      `&end=${end}` +
-      `&interval=${interval}` +
-      `&t=${Date.now()}`
+    const params = new URLSearchParams({
+      ticker,
+      start,
+      end,
+      interval,
+      t: Date.now().toString(),
+    })
+
+    const url = `http://localhost:8000/api/chart?${params.toString()}`
 
     setError(null)
     setImgSrc(url)
