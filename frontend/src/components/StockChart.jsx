@@ -1,40 +1,34 @@
-import React, { useState, useEffect } from 'react'
+import { useEffect, useRef } from 'react'
+import { createChart } from 'lightweight-charts'
 
-export default function StockChart({ ticker, start, end, interval }) {
-  const [imgSrc, setImgSrc] = useState(null)
-  const [error,  setError]  = useState(null)
+export default function StockChart({ symbol, timeframe }) {
+  const containerRef = useRef(null)
 
   useEffect(() => {
-    if (!ticker || !start || !end) return
+    if (!symbol) return
+    const chart = createChart(containerRef.current, { width: 600, height: 400 })
+    const candleSeries = chart.addCandlestickSeries()
 
-    const params = new URLSearchParams({
-      ticker,
-      start,
-      end,
-      interval,
-      t: Date.now().toString(),
-    })
+    async function load() {
+      const params = new URLSearchParams({ symbol, timeframe })
+      const resp = await fetch(`http://localhost:8000/api/ohlc?${params.toString()}`)
+      const data = await resp.json()
+      candleSeries.setData(data)
+    }
 
-    const url = `http://localhost:8000/api/chart?${params.toString()}`
+    load()
 
-    setError(null)
-    setImgSrc(url)
-  }, [ticker, start, end, interval])
+    const source = new EventSource(`http://localhost:8000/api/stream/${symbol}`)
+    source.onmessage = e => {
+      const candle = JSON.parse(e.data)
+      candleSeries.update(candle)
+    }
 
-  if (error) {
-    return <div className="error">Error: {error}</div>
-  }
-  if (!imgSrc) {
-    return null
-  }
-  return (
-    <div className="chart-container">
-      <img
-        src={imgSrc}
-        alt={`${ticker} chart`}
-        onError={() => setError('Failed to load chart')}
-        style={{ maxWidth: '100%', height: 'auto', border: '1px solid #ccc' }}
-      />
-    </div>
-  )
+    return () => {
+      source.close()
+      chart.remove()
+    }
+  }, [symbol, timeframe])
+
+  return <div ref={containerRef} />
 }

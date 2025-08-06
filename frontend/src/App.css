@@ -1,10 +1,12 @@
 .app { padding: 20px; font-family: Arial, sans-serif; }
-.toolbar { margin-bottom: 20px; }
-.toolbar input  { margin-right: 10px; padding: 5px; }
-.toolbar button { margin-right: 5px; padding: 5px 10px; }
-.chart-container img {
-  max-width: 100%;
-  height: auto;
-  border: 1px solid #ccc;
-}
-.error { color: red; margin-top: 10px; }
+.search-bar { position: relative; margin-bottom: 10px; }
+.search-bar input { padding: 5px; width: 200px; }
+.results { list-style: none; margin: 0; padding: 0; position: absolute; background: #fff; border: 1px solid #ccc; max-height: 150px; overflow-y: auto; width: 200px; }
+.results li { padding: 4px; cursor: pointer; }
+.results li:hover { background: #eee; }
+.watchlist { margin: 10px 0; display: flex; gap: 10px; flex-wrap: wrap; }
+.watch-item { cursor: pointer; padding: 4px 8px; border: 1px solid #ccc; border-radius: 4px; }
+.watch-item button { margin-left: 5px; }
+.timeframes { margin: 10px 0; }
+.timeframes button { margin-right: 5px; }
+.timeframes .active { font-weight: bold; }
